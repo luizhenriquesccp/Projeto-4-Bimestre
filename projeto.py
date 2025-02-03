@@ -39,6 +39,14 @@ def adicionar_livro(matricula, nome_do_livro, autor, codigo):
     with open("livros.txt", "a") as f:
         f.write(f"{matricula},{nome_do_livro},{autor},{codigo}\n")
 
+def verificasão(dados):
+    if isinstance(dados, int):
+        messagebox.showinfo("Feito")
+    else:
+        messagebox.showerror("ERRO","Apenas numeros.")
+    
+
+
 def tela_inicial():
     def abrir_tela_cadastro():
         janela_inicial.destroy()
@@ -66,6 +74,7 @@ def tela_cadastro():
         matricula = entrada_matricula.get()
         nome = entrada_nome.get()
         senha = entrada_senha.get()
+        verificasão(matricula)
         if matricula and nome and senha:
             if cadastrar_usuario(matricula, nome, senha):
                 messagebox.showinfo("Sucesso", "Usuário cadastrado!")
@@ -86,15 +95,15 @@ def tela_cadastro():
     frame_cadastro = ttk.Frame(janela_cadastro, padding=20)
     frame_cadastro.pack(pady=20)
 
-    ttk.Label(frame_cadastro, text="Matrícula:").grid(row=0, column=0, padx=5, pady=5, sticky="w")
+    ttk.Label(frame_cadastro, text="Digite sua Matrícula:").grid(row=0, column=0, padx=5, pady=5, sticky="w")
     entrada_matricula = ttk.Entry(frame_cadastro, width=30)
     entrada_matricula.grid(row=0, column=1, padx=5, pady=5)
 
-    ttk.Label(frame_cadastro, text="Nome:").grid(row=1, column=0, padx=5, pady=5, sticky="w")
+    ttk.Label(frame_cadastro, text="Diga seu Nome:").grid(row=1, column=0, padx=5, pady=5, sticky="w")
     entrada_nome = ttk.Entry(frame_cadastro, width=30)
     entrada_nome.grid(row=1, column=1, padx=5, pady=5)
 
-    ttk.Label(frame_cadastro, text="Senha:").grid(row=2, column=0, padx=5, pady=5, sticky="w")
+    ttk.Label(frame_cadastro, text="Crie uma Senha:").grid(row=2, column=0, padx=5, pady=5, sticky="w")
     entrada_senha = ttk.Entry(frame_cadastro, width=30, show="*")
     entrada_senha.grid(row=2, column=1, padx=5, pady=5)
 
@@ -107,6 +116,7 @@ def tela_login():
     def realizar_login():
         matricula = entrada_matricula.get()
         senha = entrada_senha.get()
+        verificasão(matricula)
         nome_usuario = validar_login(matricula, senha)
         if nome_usuario:
             janela_login.destroy()
