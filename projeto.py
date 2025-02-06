@@ -12,7 +12,7 @@ def inicializar_arquivos():
 def cadastrar_usuario(matricula, nome, senha):
     with open("usuarios.txt", "r") as f:
         for linha in f:
-            if matricula in linha.split(",")[0]:
+            if matricula == linha.split(",")[0]:
                 return False 
     with open("usuarios.txt", "a") as f:
         f.write(f"{matricula},{nome},{senha}\n")
@@ -37,14 +37,7 @@ def obter_livros(matricula):
 
 def adicionar_livro(matricula, nome_do_livro, autor, codigo):
     with open("livros.txt", "a") as f:
-        f.write(f"{matricula},{nome_do_livro},{autor},{codigo}\n")
-
-def verificasão(dados):
-    if isinstance(dados, int):
-        messagebox.showinfo("Feito")
-    else:
-        messagebox.showerror("ERRO","Apenas numeros.")
-    
+        f.write(f"{matricula},{nome_do_livro},{autor},{codigo}\n")    
 
 
 def tela_inicial():
@@ -74,17 +67,19 @@ def tela_cadastro():
         matricula = entrada_matricula.get()
         nome = entrada_nome.get()
         senha = entrada_senha.get()
-        verificasão(matricula)
         if matricula and nome and senha:
-            if cadastrar_usuario(matricula, nome, senha):
-                messagebox.showinfo("Sucesso", "Usuário cadastrado!")
-                janela_cadastro.destroy()
-                tela_inicial()
-            else:
-                messagebox.showerror("Erro", "Usuário já existe!")
+            try:
+                matricula = int(matricula)
+                if cadastrar_usuario(matricula, nome, senha):
+                    messagebox.showinfo("Sucesso", "Usuário cadastrado!")
+                    janela_cadastro.destroy()
+                    tela_inicial()
+                else:
+                    messagebox.showerror("Erro", "Usuário já existe!")
+            except ValueError:
+                messagebox.showerror("ERRO", "Apenas números são permitidos na matrícula.")
         else:
             messagebox.showwarning("Aviso", "Preencha todos os campos!")
-
     janela_cadastro = tk.Tk()
     janela_cadastro.title("Cadastro de Usuário")
     janela_cadastro.geometry("400x400")
@@ -116,11 +111,10 @@ def tela_login():
     def realizar_login():
         matricula = entrada_matricula.get()
         senha = entrada_senha.get()
-        verificasão(matricula)
         nome_usuario = validar_login(matricula, senha)
         if nome_usuario:
-            janela_login.destroy()
-            tela_usuario(matricula, nome_usuario)
+                janela_login.destroy()
+                tela_usuario(matricula, nome_usuario)
         else:
             messagebox.showerror("Erro", "Matrícula ou senha incorretas!")
 
